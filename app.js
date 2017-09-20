@@ -4,11 +4,13 @@ const json = require('koa-json');
 const views = require('koa-views');
 const onerror = require('koa-onerror');
 const router = require("koa-router")();
+const mount = require('koa-mount');
 
 const moment = require('moment');
 
 const index = require('./routes/index');
 const users = require('./routes/users');
+const redis = require('./routes/redis');
 
 // error handler
 onerror(app);
@@ -30,10 +32,13 @@ app.use(function* (next) {
 });
 
 app.use(require('koa-static')(__dirname + '/public'));
+app.use(mount('/admin', require('koa-static')(__dirname + '/admin')));
+app.use(mount('/node_modules', require('koa-static')(__dirname + '/node_modules')));
 
 // routes definition
 router.use('/', index.routes(), index.allowedMethods());
 router.use('/users', users.routes(), users.allowedMethods());
+router.use('/redis', redis.routes(), redis.allowedMethods());
 
 // mount root routes
 app.use(router.routes());
