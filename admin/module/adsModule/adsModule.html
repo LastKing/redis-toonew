@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+
+<div class="container">
+    <button class="btn btn-default" ng-click="getAllField('niuer_open_app')">获取开屏</button>
+    <button class="btn btn-default" ng-click="getAllField('niuer_channel')">获取频道信息流</button>
+    <button class="btn btn-default" ng-click="displayStyleFunc('json')">JSON格式展现</button>
+    <button class="btn btn-default" ng-click="displayStyleFunc('table')">Table格式展现</button>
+    <button class="btn btn-default" ng-click="saveToLocal()">保存线上redis到本地</button>
+</div>
+
+<div class="container">
+    <div class="row">
+        <div class="col-sm-1">
+            <div>
+                <table class="table table-striped table-bordered">
+                    <thead>
+                    <tr>
+                        <td>field name</td>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr ng-repeat="field in keys track by $index">
+                        <td>
+                            <a ng-click="getValue(field)">{{field}}</a>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="col-sm-11" ng-if="displayStyle==='json'">
+            <ol>
+                <li ng-repeat="ad in ads track by $index">
+                    {
+                    <div style="margin-left:10px;" ng-repeat="(key2,value2) in ad">{{key2}}:{{value2}}</div>
+                    }
+                    <br>
+                </li>
+            </ol>
+        </div>
+
+        <div class="col-sm-11" ng-if="displayStyle==='table'">
+
+            <table class="table">
+                <thead>
+                <tr>
+                    <th ng-if="!!ads||ads.length>0">#</th>
+                    <th ng-repeat="(key2,value2) in ads[0] track by $index">{{key2}}</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr ng-repeat="ad in ads track by $index">
+                    <td>{{$index+1}}</td>
+                    <td ng-repeat="(key2,value2) in ad">{{value2}}</td>
+                </tr>
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+</div>
+
+</body>
+</html>

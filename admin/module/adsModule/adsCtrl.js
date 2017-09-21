@@ -1,16 +1,14 @@
 /**
- * Created by toonew on 2017/9/20.
+ * Created by toonew on 2017/9/21.
  */
-const app = angular.module('app', ['toaster', 'ngAnimate']);
-
-app.controller('indexCtrl', function ($scope, $http, toaster) {
+let adsCtrl = adsModule.controller('adsCtrl', function ($scope,$http) {
+  $scope.displayStyle = 'json';//展现方式 默认JSON
 
   $scope.getAllField = function (key) {
     key = key || 'niuer_open_app';
     $scope.key = key;
     $http.get(`/redis/fields?key=${key}`).then(function (doc) {
       let keys = doc.data;
-
 
       $scope.keys = keys;
     }).catch(function (err) {
@@ -31,6 +29,18 @@ app.controller('indexCtrl', function ($scope, $http, toaster) {
     });
   };
 
+  /**
+   * 切换展现形式
+   * @param style
+   */
+  $scope.displayStyleFunc = function (style) {
+    $scope.displayStyle = style;
+  };
+
+  /**
+   * 根据值转化值
+   * @param field
+   */
   $scope.getValue = function (field) {
     let paraments = {key: $scope.key, field: field};
     $http.post('/redis/getValueByKeyAndFie', paraments).then(function (doc) {
@@ -43,15 +53,5 @@ app.controller('indexCtrl', function ($scope, $http, toaster) {
     }).catch(function (err) {
       console.error(err);
     })
-  }
+  };
 });
-
-// $http.get('/redis').then(function (doc) {
-//   $scope.redis = doc.data;
-//   for (let key in $scope.redis) {
-//     if ($scope.redis.hasOwnProperty(key))
-//       $scope.redis[key] = JSON.parse($scope.redis[key]);
-//   }
-// }).catch(function (err) {
-//   console.error(err);
-// });
