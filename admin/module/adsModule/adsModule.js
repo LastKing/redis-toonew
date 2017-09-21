@@ -5,7 +5,6 @@ const adsModule = angular.module('adsModule', ['ui.router']);
 
 //overview模块路由和依赖配置
 adsModule.config(function ($stateProvider) {
-
   $stateProvider.state({
     name: 'ads',
     url: '/ads',
