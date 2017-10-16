@@ -1,7 +1,7 @@
 /**
  * Created by toonew on 2017/9/21.
  */
-let adsCtrl = adsModule.controller('adsCtrl', function ($scope,$http) {
+let adsCtrl = adsModule.controller('adsCtrl', function ($scope,$http,toaster) {
   $scope.displayStyle = 'json';//展现方式 默认JSON
 
   $scope.getAllField = function (key) {
