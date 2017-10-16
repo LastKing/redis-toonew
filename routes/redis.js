@@ -3,8 +3,9 @@
  */
 const router = require('koa-router')();
 
-const testRedis = require('../db/redis').testRedis;
 const devRedis = require('../db/redis').devRedis;
+const testRedis = require('../db/redis').testRedis;
+const onlineRedis = require('../db/redis').onlineRedis;
 
 router.get('/', function* () {
   let position = this.query.position;
@@ -34,8 +35,19 @@ router.post('/getValueByKeyAndFie', function* () {
 });
 
 router.get('/saveLocal', function* () {
-  var doc = yield testRedis.hgetallAsync('niuer_open_app');
-  var doc2 = yield testRedis.hgetallAsync('niuer_channel');
+  let type = this.query.type;
+
+  let doc;
+  let doc2;
+  if (type === 'test') {
+    doc = yield testRedis.hgetallAsync('niuer_open_app');
+    doc2 = yield testRedis.hgetallAsync('niuer_channel');
+  }
+
+  if (type === 'online') {
+    doc = yield onlineRedis.hgetallAsync('niuer_open_app');
+    doc2 = yield onlineRedis.hgetallAsync('niuer_channel');
+  }
 
   yield setAll(devRedis, 'niuer_open_app', doc);
   yield setAll(devRedis, 'niuer_channel', doc2);

@@ -4,12 +4,13 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Title</title>
+    <title>redis查询器</title>
     <link rel="stylesheet" href="/node_modules/bootstrap/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="/node_modules/angular-ui-bootstrap/dist/ui-bootstrap-csp.css">
     <link rel="stylesheet" href="/node_modules/angularjs-toaster/toaster.min.css">
     <link rel="stylesheet" href="/admin/css/style.css">
 </head>
+
 <body ng-controller="rootCtrl">
 
 <nav class="navbar navbar-inverse">
@@ -20,14 +21,14 @@
     </div>
 </nav>
 
-<div class="col-sm-1">
-    <button class="btn btn-default" ui-sref="hello" ui-sref-active="active">
+<div class="col-sm-2">
+    <button class="btn btn-default btn-nav" ui-sref="hello" ui-sref-active="active">
         Hello
     </button>
-    <button class="btn btn-default" ui-sref="about" ui-sref-active="active">
+    <button class="btn btn-default btn-nav" ui-sref="about" ui-sref-active="active">
         About
     </button>
-    <button class="btn btn-default" ui-sref="ads" ui-sref-active="active">
+    <button class="btn btn-default btn-nav" ui-sref="ads" ui-sref-active="active">
         ads查询
     </button>
 
@@ -42,7 +43,7 @@
 
 </div>
 
-<div class="col-sm-11">
+<div class="col-sm-10">
     <ui-view></ui-view>
 </div>
 
@@ -61,5 +62,7 @@
 <script src="/admin/module/main.js"></script>
 <script src="/admin/module/adsModule/adsModule.js"></script>
 <script src="/admin/module/adsModule/adsCtrl.js"></script>
+<script src="/admin/module/filter/filter.js"></script>
+
 </body>
 </html>
