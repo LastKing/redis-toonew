@@ -5,7 +5,7 @@ const router = require('koa-router')();
 
 const devRedis = require('../db/redis').devRedis;
 const testRedis = require('../db/redis').testRedis;
-const onlineRedis = require('../db/redis').onlineRedis;
+// const onlineRedis = require('../db/redis').onlineRedis;
 
 router.get('/', function* () {
   let position = this.query.position;
@@ -13,7 +13,7 @@ router.get('/', function* () {
   if (position === 'testing') {
     doc = yield testRedis.hgetallAsync('niuer_channel');
   } else {
-    doc = yield testRedis.hgetallAsync('niuer_channel');
+    doc = yield devRedis.hgetallAsync('niuer_channel');
   }
 
   yield this.body = doc;
@@ -22,7 +22,7 @@ router.get('/', function* () {
 router.get('/fields', function* () {
   let key = this.query.key;
 
-  let keys = yield testRedis.hkeysAsync(key);
+  let keys = yield devRedis.hkeysAsync(key);
   keys = keys.sort();
   yield this.body = keys;
 });
@@ -44,10 +44,10 @@ router.get('/saveLocal', function* () {
     doc2 = yield testRedis.hgetallAsync('niuer_channel');
   }
 
-  if (type === 'online') {
-    doc = yield onlineRedis.hgetallAsync('niuer_open_app');
-    doc2 = yield onlineRedis.hgetallAsync('niuer_channel');
-  }
+  // if (type === 'online') {
+  //   doc = yield onlineRedis.hgetallAsync('niuer_open_app');
+  //   doc2 = yield onlineRedis.hgetallAsync('niuer_channel');
+  // }
 
   yield setAll(devRedis, 'niuer_open_app', doc);
   yield setAll(devRedis, 'niuer_channel', doc2);

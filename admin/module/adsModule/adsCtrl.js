@@ -8,9 +8,7 @@ let adsCtrl = adsModule.controller('adsCtrl', function ($scope, $http, toaster) 
     key = key || 'niuer_open_app';
     $scope.key = key;
     $http.get(`/redis/fields?key=${key}`).then(function (doc) {
-      let keys = doc.data;
-
-      $scope.keys = keys;
+      $scope.keys = doc.data;
     }).catch(function (err) {
       console.error(err);
     });
@@ -21,8 +19,8 @@ let adsCtrl = adsModule.controller('adsCtrl', function ($scope, $http, toaster) 
   /**
    * 保存测试服务器上的数据到本地
    */
-  $scope.saveToLocal = function () {
-    $http.get('/redis/saveLocal').then(function (doc) {
+  $scope.saveToLocal = function (type) {
+    $http.get(`/redis/saveLocal?type=${type}`).then(function (doc) {
       if (doc.data.status === 'success') toaster.pop('info', 'save', '保存成功')
     }).catch(function (err) {
       console.error(err);
@@ -46,7 +44,7 @@ let adsCtrl = adsModule.controller('adsCtrl', function ($scope, $http, toaster) 
     $http.post('/redis/getValueByKeyAndFie', paraments).then(function (doc) {
       let ads = JSON.parse(doc.data.data);
       ads.forEach(function (ad) {
-        delete ad.h && delete ad.w;
+        // delete ad.h && delete ad.w;
         return ad;
       });
       $scope.ads = ads;

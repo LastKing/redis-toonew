@@ -32,6 +32,7 @@
     "koa-static": "^1.5.2",
     "koa-views": "^3.1.0",
     "moment": "^2.18.1",
-    "redis": "^2.8.0"
+    "redis": "^2.8.0",
+    "superagent": "^3.6.3"
   }
 }
