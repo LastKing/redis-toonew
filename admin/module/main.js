@@ -20,6 +20,13 @@ app.config(function ($stateProvider, $urlRouterProvider) {
     template: '<h3>Its the UI-Router hello world app!</h3>'
   };
 
+  $stateProvider.state({
+    name: 'ads',
+    url: '/ads',
+    controller: 'adsCtrl',
+    templateUrl: '/admin/module/adsModule/adsModule.html',
+  });
+
   $stateProvider.state(helloState);
   $stateProvider.state(aboutState);
 });

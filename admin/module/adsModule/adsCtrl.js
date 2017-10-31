@@ -4,9 +4,11 @@
 let adsCtrl = adsModule.controller('adsCtrl', function ($scope, $http, toaster) {
   $scope.displayStyle = 'json';//展现方式 默认JSON
 
+  //获取 开屏/信息流 广告队列中存在的广告
   $scope.getAllField = function (key) {
     key = key || 'niuer_open_app';
     $scope.key = key;
+
     $http.get(`/redis/fields?key=${key}`).then(function (doc) {
       $scope.keys = doc.data;
     }).catch(function (err) {

@@ -29,7 +29,7 @@ router.get('/fields', function* () {
 
 router.post('/getValueByKeyAndFie', function* () {
   let body = this.request.body;
-  let str = yield testRedis.hgetAsync(body.key, body.field);
+  let str = yield devRedis.hgetAsync(body.key, body.field);
 
   yield this.body = {result: 1, data: str};
 });
