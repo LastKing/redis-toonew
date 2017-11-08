@@ -7,18 +7,8 @@ const devRedis = require('../db/redis').devRedis;
 const testRedis = require('../db/redis').testRedis;
 // const onlineRedis = require('../db/redis').onlineRedis;
 
-router.get('/', function* () {
-  let position = this.query.position;
-  let doc;
-  if (position === 'testing') {
-    doc = yield testRedis.hgetallAsync('niuer_channel');
-  } else {
-    doc = yield devRedis.hgetallAsync('niuer_channel');
-  }
 
-  yield this.body = doc;
-});
-
+//根据key  获取所有的field
 router.get('/fields', function* () {
   let key = this.query.key;
 
@@ -27,6 +17,8 @@ router.get('/fields', function* () {
   yield this.body = keys;
 });
 
+
+//根据key和filed 获得广告内容
 router.post('/getValueByKeyAndFie', function* () {
   let body = this.request.body;
   let str = yield devRedis.hgetAsync(body.key, body.field);
@@ -34,14 +26,40 @@ router.post('/getValueByKeyAndFie', function* () {
   yield this.body = {result: 1, data: str};
 });
 
-router.get('/saveLocal', function* () {
+
+router.get('/getValueByKeyAndFieGroupByNum', function* () {
+  let key = this.query.key;
   let type = this.query.type;
 
-  let doc;
-  let doc2;
+  let result = yield devRedis.hscanAsync('niuer_channel', 0);
+
+  this.body = result;
+});
+
+//获取keys值长度
+router.get('/hkeyLength', function* () {
+  let type = this.query.type;
+  let key = this.query.key;
+
+  let doc = '';
   if (type === 'test') {
-    doc = yield testRedis.hgetallAsync('niuer_open_app');
-    doc2 = yield testRedis.hgetallAsync('niuer_channel');
+    doc = yield testRedis.hlenAsync(key);
+  } else {
+    doc = yield devRedis.hlenAsync(key);
+  }
+
+  this.body = doc;
+});
+
+
+//保存线上的数据到本地
+router.get('/saveToLocal', function* () {
+  let type = this.query.type;
+  let key = this.query.key;
+
+  let doc;
+  if (type === 'test') {
+    doc = yield testRedis.hgetallAsync(key);
   }
 
   // if (type === 'online') {
@@ -49,8 +67,7 @@ router.get('/saveLocal', function* () {
   //   doc2 = yield onlineRedis.hgetallAsync('niuer_channel');
   // }
 
-  yield setAll(devRedis, 'niuer_open_app', doc);
-  yield setAll(devRedis, 'niuer_channel', doc2);
+  yield setAll(devRedis, key, doc);
 
   function* setAll(client, key, doc) {
     try {
@@ -64,5 +81,6 @@ router.get('/saveLocal', function* () {
 
   yield this.body = {result: 1, status: 'success'};
 });
+
 
 module.exports = router;

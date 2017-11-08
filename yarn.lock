@@ -21,6 +21,10 @@ angular-animate@^1.6.6:
   version "1.6.6"
   resolved "http://registry.npm.taobao.org/angular-animate/download/angular-animate-1.6.6.tgz#6925647b141a040d241bf125040f1a150fcd8a70"
 
+angular-loading-bar@^0.9.0:
+  version "0.9.0"
+  resolved "http://registry.npm.taobao.org/angular-loading-bar/download/angular-loading-bar-0.9.0.tgz#37ef52c25f102c216e7b3cdfd2fc5a5df9628e45"
+
 angular-touch@^1.6.6:
   version "1.6.6"
   resolved "http://registry.npm.taobao.org/angular-touch/download/angular-touch-1.6.6.tgz#f2068282501b95e29135930d1ce715d5405ec3e5"

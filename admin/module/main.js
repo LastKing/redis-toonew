@@ -1,8 +1,12 @@
 /**
  * Created by toonew on 2017/9/20.
  */
-const app = angular.module('app', ['ui.bootstrap', 'ui.router', 'toaster', 'ngAnimate',
-  'adsModule']);
+const app = angular.module('app',
+  [
+    'ui.bootstrap', 'ui.router', 'toaster', 'angular-loading-bar',
+    'ngAnimate',
+    'adsModule'
+  ]);
 
 app.config(function ($stateProvider, $urlRouterProvider) {
   // 默认到hello路由
@@ -25,6 +29,13 @@ app.config(function ($stateProvider, $urlRouterProvider) {
     url: '/ads',
     controller: 'adsCtrl',
     templateUrl: '/admin/module/adsModule/adsModule.html',
+  });
+
+  $stateProvider.state({
+    name: 'ads_save',
+    url: '/ads_save',
+    controller: 'adsSaveCtrl',
+    templateUrl: '/admin/module/adsModule/adsSave.html',
   });
 
   $stateProvider.state(helloState);
