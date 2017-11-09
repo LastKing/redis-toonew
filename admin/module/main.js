@@ -32,10 +32,10 @@ app.config(function ($stateProvider, $urlRouterProvider) {
   });
 
   $stateProvider.state({
-    name: 'ads_save',
-    url: '/ads_save',
-    controller: 'adsSaveCtrl',
-    templateUrl: '/admin/module/adsModule/adsSave.html',
+    name: 'ads_find',
+    url: '/ads_find',
+    controller: 'adsFindCtrl',
+    templateUrl: '/admin/module/adsModule/find/adsFind.html',
   });
 
   $stateProvider.state(helloState);

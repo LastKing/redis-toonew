@@ -25,7 +25,7 @@ let adsCtrl = adsModule.controller('adsCtrl', function ($scope, $http, toaster) 
    */
   $scope.saveToLocal = function (type) {
     $http.get(`/redis/saveToLocal?type=${type}&key=${$scope.select_key_name}`).then(function (doc) {
-      if (doc.data.status === 'success'){
+      if (doc.data.status === 'success') {
         toaster.pop('info', 'save', '保存成功');
 
         getAllField();

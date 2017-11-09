@@ -4,35 +4,45 @@
  */
 const bluebird = require('bluebird');
 const config = require('config');
+const superagent = require('superagent');
 const redis = require("redis");
 const ioredis = require('ioredis');
 
 bluebird.promisifyAll(redis.RedisClient.prototype);
 bluebird.promisifyAll(redis.Multi.prototype);
 
-const devClient = redis.createClient({
+const devClient = new ioredis({
   host: config.get('dev_redis_host'),
   port: config.get('dev_redis_port')
 });
 
-const testClient = redis.createClient({
-  host: config.get('test_redis_host'),
-  port: config.get('test_redis_port')
-});
-
-// const onlineClient = redis.createClient(config.get('online_redis_port'), config.get('online_redis_host'));
-
+devClient2 = function* (command, key, field) {
+  return yield devClient[command](key, field);
+};
 
 devClient.on("error", function (err) {
   console.log("error " + err);
 });
 
-testClient.on("error", function (err) {
-  console.log("error " + err);
-});
+
+function* testClient(command, key, field) {
+  let url = `http://${config.test_redis_host}:3001/redis?`;
+  url = `${url}command=${command}&key=${key}&field=${field}`;
+  let result = yield superagent.get(url);
+  return result.text;
+}
+
+function* onlineClient(command, key, field) {
+  let url = `http://${config.online_redis_host}:3001/redis?`;
+  url = `${url}command=${command}&key=${key}&field=${field}`;
+  let result = yield superagent.get(url);
+  return result.text;
+}
+
 
 module.exports = {
   testRedis: testClient,
   devRedis: devClient,
-  // onlineRedis: onlineClient,
+  devRedis2: devClient2,
+  onlineRedis: onlineClient,
 };

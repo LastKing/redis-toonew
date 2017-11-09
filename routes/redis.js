@@ -4,15 +4,48 @@
 const router = require('koa-router')();
 
 const devRedis = require('../db/redis').devRedis;
+const devRedis2 = require('../db/redis').devRedis2;
 const testRedis = require('../db/redis').testRedis;
-// const onlineRedis = require('../db/redis').onlineRedis;
+const onlineRedis = require('../db/redis').onlineRedis;
 
+router.get('/', function* () {
+  let req = this.query;
+
+  let command = req.command;
+  let key = req.key;
+  let field = req.field;
+
+  //根据不同的选择 返回不同的redis 客户端
+  let redis = null;
+  switch (req.type) {
+    case 'test':
+      redis = testRedis;
+      break;
+    case 'production':
+      redis = onlineRedis;
+      break;
+    default:
+      redis = devRedis2;
+  }
+
+  try {
+    let result;
+    if (!!key && !!field)
+      result = yield redis(command, key, field);
+    if (!!key && !field)
+      result = yield redis(command, key);
+
+    this.response.body = result;
+  } catch (err) {
+    console.error(err);
+  }
+});
 
 //根据key  获取所有的field
 router.get('/fields', function* () {
   let key = this.query.key;
 
-  let keys = yield devRedis.hkeysAsync(key);
+  let keys = yield devRedis.hkeys(key);
   keys = keys.sort();
   yield this.body = keys;
 });
@@ -21,7 +54,7 @@ router.get('/fields', function* () {
 //根据key和filed 获得广告内容
 router.post('/getValueByKeyAndFie', function* () {
   let body = this.request.body;
-  let str = yield devRedis.hgetAsync(body.key, body.field);
+  let str = yield devRedis.hget(body.key, body.field);
 
   yield this.body = {result: 1, data: str};
 });
@@ -31,7 +64,7 @@ router.get('/getValueByKeyAndFieGroupByNum', function* () {
   let key = this.query.key;
   let type = this.query.type;
 
-  let result = yield devRedis.hscanAsync('niuer_channel', 0);
+  let result = yield devRedis.hscan('niuer_channel', 0);
 
   this.body = result;
 });
@@ -43,9 +76,9 @@ router.get('/hkeyLength', function* () {
 
   let doc = '';
   if (type === 'test') {
-    doc = yield testRedis.hlenAsync(key);
+    doc = yield testRedis.hlen(key);
   } else {
-    doc = yield devRedis.hlenAsync(key);
+    doc = yield devRedis.hlen(key);
   }
 
   this.body = doc;
@@ -59,12 +92,12 @@ router.get('/saveToLocal', function* () {
 
   let doc;
   if (type === 'test') {
-    doc = yield testRedis.hgetallAsync(key);
+    doc = yield testRedis.hgetall(key);
   }
 
   // if (type === 'online') {
-  //   doc = yield onlineRedis.hgetallAsync('niuer_open_app');
-  //   doc2 = yield onlineRedis.hgetallAsync('niuer_channel');
+  //   doc = yield onlineRedis.hgetall('niuer_open_app');
+  //   doc2 = yield onlineRedis.hgetall('niuer_channel');
   // }
 
   yield setAll(devRedis, key, doc);
@@ -72,7 +105,7 @@ router.get('/saveToLocal', function* () {
   function* setAll(client, key, doc) {
     try {
       for (let key2 in doc) {
-        yield client.hsetAsync(key, key2, doc[key2])
+        yield client.hset(key, key2, doc[key2])
       }
     } catch (err) {
       console.error(err);
