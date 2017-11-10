@@ -21,7 +21,7 @@ router.get('/', function* () {
     case 'test':
       redis = testRedis;
       break;
-    case 'production':
+    case 'online':
       redis = onlineRedis;
       break;
     default:

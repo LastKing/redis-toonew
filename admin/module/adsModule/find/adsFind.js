@@ -11,12 +11,18 @@ let adsFindCtrl = adsModule.controller('adsFindCtrl', function ($scope, $http, t
   $scope.search = function () {
     let type = $scope.type || 'dev';
     let key = $scope.key;
-    let field = $scope.field;
+    let field = encodeURIComponent($scope.field);
 
 
     let url = `/redis?command=hget&type=${type}&key=${key}&field=${field}`;
     $http.get(url).then(function (doc) {
       let ads = JSONTool(doc.data);
+
+      ads.forEach(function (ad) {
+        delete ad.ads_time;
+        delete ad.order_time;
+        return ad;
+      });
 
       $scope.ads = ads;
     }).catch(err => {

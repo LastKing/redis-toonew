@@ -28,7 +28,8 @@ app.use(function* (next) {
   let start = new Date();
   yield next;
   let ms = new Date - start;
-  console.log('%s %s %s - %s', moment(start).format("YYYY-MM-DD HH:MM:SS"), this.method, this.url, ms);
+  if (!this.path.match('node_modules'))
+    console.log('%s %s %s - %s', moment(start).format("YYYY-MM-DD HH:MM:SS"), this.method, this.url, ms);
 });
 
 app.use(require('koa-static')(__dirname + '/public'));

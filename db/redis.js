@@ -27,7 +27,7 @@ devClient.on("error", function (err) {
 
 function* testClient(command, key, field) {
   let url = `http://${config.test_redis_host}:3001/redis?`;
-  url = `${url}command=${command}&key=${key}&field=${field}`;
+  url = `${url}command=${command}&key=${key}&field=${encodeURIComponent(field)}`;
   let result = yield superagent.get(url);
   return result.text;
 }
