@@ -9,12 +9,17 @@ let adsFindCtrl = adsModule.controller('adsFindCtrl', function ($scope, $http, l
   $scope.field = locals.get('field', '1_5_1');
 
   $scope.search = function () {
+    if (!$scope.key || !$scope.field) {
+      toaster.pop('warning', 'save', '参数缺失');
+      return;
+    }
+
+    locals.set('key2', $scope.key);
+    locals.set('field', $scope.field);
+
     let type = $scope.type || 'dev';
     let key = $scope.key;
     let field = encodeURIComponent($scope.field);
-
-    locals.set('key2', key);
-    locals.set('field', field);
 
 
     let url = `/redis?command=hget&type=${type}&key=${key}&field=${field}`;
