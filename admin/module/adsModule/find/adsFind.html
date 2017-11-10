@@ -3,14 +3,26 @@
     <div class="col-sm-3">
         <div class="form-group">
             <label for="key">key</label>
-            <input type="text" class="form-control" id="key" ng-model="key">
+            <input type="text" class="form-control" id="key" ng-model="key" list="key_list">
+            <datalist id="key_list">
+                <option value="niuer_open_app">
+                <option value="niuer_channel">
+                <option value="union_ads_WR">
+            </datalist>
         </div>
     </div>
 
     <div class="col-sm-3">
         <div class="form-group">
             <label for="field">field</label>
-            <input type="text" class="form-control" id="field" ng-model="field">
+            <input type="text" class="form-control" id="field" ng-model="field" list="field_list">
+            <datalist id="field_list">
+                <option value="1_5_1">
+                <option value="2_8_1">
+                <option value="1_5_1_1_1">
+                <option value="2_8_1_1_1">
+                <option value="4#2#1#1#5">
+            </datalist>
         </div>
     </div>
 

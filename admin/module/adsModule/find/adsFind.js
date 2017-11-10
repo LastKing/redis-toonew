@@ -1,17 +1,20 @@
 /**
  * Created by toonew on 2017/9/21.
  */
-let adsFindCtrl = adsModule.controller('adsFindCtrl', function ($scope, $http, toaster) {
+let adsFindCtrl = adsModule.controller('adsFindCtrl', function ($scope, $http, locals, toaster) {
   $scope.displayStyle = 'json';//展现方式 默认JSON
 
   $scope.type = 'dev';//测试用
-  $scope.key = 'niuer_open_app';
-  $scope.field = '1_5_1';
+  $scope.key = locals.get('key2', 'niuer_open_app');  //local get方法获取不能用key关键字，有bug
+  $scope.field = locals.get('field', '1_5_1');
 
   $scope.search = function () {
     let type = $scope.type || 'dev';
     let key = $scope.key;
     let field = encodeURIComponent($scope.field);
+
+    locals.set('key2', key);
+    locals.set('field', field);
 
 
     let url = `/redis?command=hget&type=${type}&key=${key}&field=${field}`;
