@@ -8,6 +8,7 @@ const devRedis2 = require('../db/redis').devRedis2;
 const testRedis = require('../db/redis').testRedis;
 const onlineRedis = require('../db/redis').onlineRedis;
 
+//搜索 dev，test，online 三个环境下的 redis数据库中的查询
 router.get('/', function* () {
   let req = this.query;
 
@@ -41,7 +42,7 @@ router.get('/', function* () {
   }
 });
 
-//根据key  获取所有的field
+//获取hash  中所有的field
 router.get('/fields', function* () {
   let key = this.query.key;
 
@@ -69,7 +70,7 @@ router.get('/getValueByKeyAndFieGroupByNum', function* () {
   this.body = result;
 });
 
-//获取keys值长度
+//获取hash中 keys长度
 router.get('/hkeyLength', function* () {
   let type = this.query.type;
   let key = this.query.key;

@@ -8,6 +8,7 @@ let adsFindCtrl = adsModule.controller('adsFindCtrl', function ($scope, $http, l
   $scope.key = locals.get('key2', 'niuer_open_app');  //local get方法获取不能用key关键字，有bug
   $scope.field = locals.get('field', '1_5_1');
 
+  //查询redis 工具
   $scope.search = function () {
     if (!$scope.key || !$scope.field) {
       toaster.pop('warning', 'save', '参数缺失');
@@ -26,11 +27,14 @@ let adsFindCtrl = adsModule.controller('adsFindCtrl', function ($scope, $http, l
     $http.get(url).then(function (doc) {
       let ads = JSONTool(doc.data);
 
-      ads.forEach(function (ad) {
-        delete ad.ads_time;
-        delete ad.order_time;
-        return ad;
-      });
+      if (ads)
+        ads.forEach(function (ad) {
+          delete ad.ads_time;
+          delete ad.order_time;
+          return ad;
+        });
+      else
+        toaster.pop('warning', 'save', '您查询的值不存在或者不是json');
 
       $scope.ads = ads;
     }).catch(err => {
@@ -38,6 +42,19 @@ let adsFindCtrl = adsModule.controller('adsFindCtrl', function ($scope, $http, l
     });
   };
 
+  $scope.saveAdToLocal = function () {
+    let type = $scope.type || 'dev';
+    let key = $scope.key;
+    let field = encodeURIComponent($scope.field);
+
+    let url = `/redis?command=hget&type=${type}&key=${key}&field=${field}`;
+    $http.get(url).then(function (result) {
+      if (result = 'success')
+        toaster.pop('info', 'save', '保存成功');
+    });
+  };
+
+  //递归json 格式化工具
   function JSONTool(str) {
     try {
       let json = JSON.parse(str);
@@ -49,7 +66,6 @@ let adsFindCtrl = adsModule.controller('adsFindCtrl', function ($scope, $http, l
       return str;
     }
   }
-
 
   /**
    * 切换展现形式
