@@ -50,7 +50,9 @@ let adsFindCtrl = adsModule.controller('adsFindCtrl', function ($scope, $http, l
     let url = `/redis?command=hget&type=${type}&key=${key}&field=${field}`;
     $http.get(url).then(function (result) {
       if (result = 'success')
-        toaster.pop('info', 'save', '保存成功');
+        toaster.pop('info', '查询成功', '');
+    }).catch(function (err) {
+      toaster.pop('warning', '查询失败', '');
     });
   };
 

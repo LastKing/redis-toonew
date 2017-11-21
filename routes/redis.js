@@ -93,7 +93,7 @@ router.get('/saveToLocal', function* () {
 
   let doc;
   if (type === 'test') {
-    doc = yield testRedis.hgetall(key);
+    doc = yield testRedis('hgetall', key);
   }
 
   // if (type === 'online') {
