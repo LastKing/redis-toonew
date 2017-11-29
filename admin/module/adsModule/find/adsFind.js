@@ -24,20 +24,29 @@ let adsFindCtrl = adsModule.controller('adsFindCtrl', function ($scope, $http, l
 
 
     let url = `/redis?command=hget&type=${type}&key=${key}&field=${field}`;
-    $http.get(url).then(function (doc) {
-      let ads = JSONTool(doc.data);
 
-      if (ads)
+    $http.get(url).then(function (doc) {
+      let ads;
+      if (!Array.isArray(doc.data))
+        ads = JSONTool(doc.data);
+      else
+        ads = doc.data;
+
+      if (Array.isArray(ads))
         ads.forEach(function (ad) {
           delete ad.ads_time;
           delete ad.order_time;
           return ad;
         });
-      else
+      else {
+        $scope.displayStyle = 'string';
+        $scope.ads = ads;
         toaster.pop('warning', 'save', '您查询的值不存在或者不是json');
+      }
 
       $scope.ads = ads;
     }).catch(err => {
+      toaster.pop('warning', 'save', err);
       console.error(err);
     });
   };
@@ -60,12 +69,11 @@ let adsFindCtrl = adsModule.controller('adsFindCtrl', function ($scope, $http, l
   function JSONTool(str) {
     try {
       let json = JSON.parse(str);
+      console.log(str);
       if (typeof json === 'string')
-        json = JSONTool(json);
-
-      return json;
+        return JSONTool(json);
     } catch (err) {
-      return str;
+      return {reason: err, str};
     }
   }
 

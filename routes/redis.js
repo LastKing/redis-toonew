@@ -101,6 +101,8 @@ router.get('/saveToLocal', function* () {
   //   doc2 = yield onlineRedis.hgetall('niuer_channel');
   // }
 
+  doc = JSON.parse(doc);
+
   yield setAll(devRedis, key, doc);
 
   function* setAll(client, key, doc) {

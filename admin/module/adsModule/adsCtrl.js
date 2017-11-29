@@ -28,7 +28,7 @@ let adsCtrl = adsModule.controller('adsCtrl', function ($scope, $http, toaster) 
       if (doc.data.status === 'success') {
         toaster.pop('info', 'save', '保存成功');
 
-        getAllField();
+        $scope.getAllField();
       }
 
     }).catch(function (err) {
