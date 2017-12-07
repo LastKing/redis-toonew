@@ -76,11 +76,10 @@ router.get('/hkeyLength', function* () {
   let key = this.query.key;
 
   let doc = '';
-  if (type === 'test') {
+  if (type === 'test')
     doc = yield testRedis.hlen(key);
-  } else {
+  else
     doc = yield devRedis.hlen(key);
-  }
 
   this.body = doc;
 });
@@ -96,10 +95,9 @@ router.get('/saveToLocal', function* () {
     doc = yield testRedis('hgetall', key);
   }
 
-  // if (type === 'online') {
-  //   doc = yield onlineRedis.hgetall('niuer_open_app');
-  //   doc2 = yield onlineRedis.hgetall('niuer_channel');
-  // }
+  if (type === 'online') {
+    doc = yield onlineRedis('hgetall', key);
+  }
 
   doc = JSON.parse(doc);
 

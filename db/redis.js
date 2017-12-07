@@ -16,14 +16,14 @@ const devClient = new ioredis({
   port: config.get('dev_redis_port')
 });
 
-devClient2 = function* (command, key, field) {
-  return yield devClient[command](key, field);
-};
 
 devClient.on("error", function (err) {
   console.log("error " + err);
 });
 
+function* devClient2(command, key, field) {
+  return yield devClient[command](key, field);
+}
 
 function* testClient(command, key, field) {
   let url = `http://${config.test_redis_host}:3001/redis?`;
