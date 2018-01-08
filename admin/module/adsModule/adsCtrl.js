@@ -12,6 +12,7 @@ let adsCtrl = adsModule.controller('adsCtrl', function ($scope, $http, toaster) 
 
     $http.get(`/redis/fields?key=${key}`).then(function (doc) {
       $scope.keys = doc.data;
+      $scope.backKeys = doc.data;
       getHkeysLength($scope.select_key_name);
     }).catch(function (err) {
       console.error(err);
@@ -71,5 +72,12 @@ let adsCtrl = adsModule.controller('adsCtrl', function ($scope, $http, toaster) 
   }
 
   getHkeysLength();
+
+
+  $scope.filterKey = function (keyWord) {
+    $scope.keys = _.filter($scope.backKeys, function (key) {
+      return key.search(keyWord) !== -1;
+    })
+  }
 
 });

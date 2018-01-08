@@ -13,6 +13,8 @@
 
     <button class="btn btn-sm btn-default" ng-click="saveToLocal('test')">测试数据下载</button>
     <button class="btn btn-sm btn-default" ng-click="saveToLocal('online')">正式环境数据下载</button>
+
+    <input type="text" ng-model="keyWord" ng-change="filterKey(keyWord)">
 </div>
 
 <div class="container">
