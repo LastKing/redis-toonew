@@ -101,6 +101,7 @@ router.get('/saveToLocal', function* () {
 
   doc = JSON.parse(doc);
 
+  yield devRedis.del(key);
   yield setAll(devRedis, key, doc);
 
   function* setAll(client, key, doc) {
