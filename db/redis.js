@@ -18,7 +18,7 @@ const devClient = new ioredis({
 
 
 devClient.on("error", function (err) {
-  console.log("error " + err);
+  console.error(JSON.stringify(err));
 });
 
 function* devClient2(command, key, field) {

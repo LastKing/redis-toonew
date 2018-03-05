@@ -4,8 +4,10 @@
         <option value="niuer_channel">牛耳频道信息流</option>
         <option value="ssp_need_demand">ssp广告</option>
         <option value="union_ads_WR">牛耳联盟广告</option>
-        <option value="niuer_rtb">牛耳竞价广告</option>
+        <option value="niuer_rtb_governs">牛耳竞价广告</option>
         <option value="RTB_bid_governs">牛耳竞价广告位底价</option>
+        <option value="DonewsMedia">donews媒体所有广告</option>
+        <option value="XingyouTemplate">星游所有特殊模板js</option>
     </select>
 
     <select name="" id="" ng-model="displayStyle" ng-change="displayStyleFunc(displayStyle)">
@@ -22,8 +24,9 @@
         <p ng-switch-when="niuer_channel">niuer_channel : 系统_手机品牌_省份_频道_位置</p>
         <p ng-switch-when="ssp_need_demand">ssp_need_demand : pub_媒体id </p>
         <p ng-switch-when="union_ads_WR">union_ads_WR : 媒体id#广告位id#地域id#os#品牌id </p>
-        <p ng-switch-when="niuer_rtb">niuer_rtb  系统_品牌_省份_开屏</p>
-        <p ng-switch-when="RTB_bid_governs">RTB_bid_governs  系统_地域_广告位类型_频道_位置</p>
+        <p ng-switch-when="niuer_rtb_governs">niuer_rtb_governs 系统_品牌_省份_开屏</p>
+        <p ng-switch-when="RTB_bid_governs">RTB_bid_governs 系统_地域_广告位类型_频道_位置</p>
+        <p ng-switch-when="yinliWebsite">yinliWebsite</p>
     </div>
 </div>
 
